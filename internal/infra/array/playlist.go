@@ -68,6 +68,17 @@ func (r *TrackArrRepository) GetAll(ctx context.Context) ([]entity.Track, error)
 	return result, nil
 }
 
+func (r *TrackArrRepository) GetAllWithLimit(ctx context.Context, limit int) ([]entity.Track, error) {
+	const op = "infra.array.TrackArrRepository.GetAllWithLimit"
+
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	result := make([]entity.Track, limit)
+	copy(result, r.arr[:limit])
+	return result, nil
+}
+
 func (r *TrackArrRepository) GetByGenre(ctx context.Context, genre string) ([]entity.Track, error) {
 	const op = "infra.array.TrackArrRepository.GetByGenre"
 
