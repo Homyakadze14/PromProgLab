@@ -22,6 +22,31 @@ func TestCreateAndGetAll(t *testing.T) {
 	}
 }
 
+func TestGetAllWithLimit(t *testing.T) {
+	repo := NewTrackArrRepositoryRepo()
+	ctx := context.Background()
+
+	track := entity.Track{Title: "Song", Duration: 3 * time.Minute, Genre: "Pop", Rating: 4.2}
+
+	err := repo.Create(ctx, track)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = repo.Create(ctx, track)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = repo.Create(ctx, track)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	all, _ := repo.GetAllWithLimit(ctx, 2)
+	if len(all) != 2 || all[0].Title != "Song" {
+		t.Errorf("expected 2 track, got %+v", all)
+	}
+}
+
 func TestDelete(t *testing.T) {
 	repo := NewTrackArrRepositoryRepo()
 	ctx := context.Background()
