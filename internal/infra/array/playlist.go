@@ -69,7 +69,8 @@ func (r *TrackArrRepository) GetAll(ctx context.Context) ([]entity.Track, error)
 	return result, nil
 }
 
-// функция получения ограниченого количества треков
+// Возвращает слайс с ограниченным количеством треков
+// 0 < limit < количество треков всего
 func (r *TrackArrRepository) GetAllWithLimit(ctx context.Context, limit int) ([]entity.Track, error) {
 	const op = "infra.array.TrackArrRepository.GetAllWithLimit"
 
