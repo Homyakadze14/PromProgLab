@@ -47,6 +47,40 @@ func TestGetAllWithLimit(t *testing.T) {
 	}
 }
 
+func TestGetAllWithLimitMaxLimitError(t *testing.T) {
+	repo := NewTrackArrRepositoryRepo()
+	ctx := context.Background()
+
+	track := entity.Track{Title: "Song", Duration: 3 * time.Minute, Genre: "Pop", Rating: 4.2}
+
+	err := repo.Create(ctx, track)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = repo.GetAllWithLimit(ctx, 2)
+	if err == nil {
+		t.Errorf("expected error, got nil")
+	}
+}
+
+func TestGetAllWithLimitMinLimitError(t *testing.T) {
+	repo := NewTrackArrRepositoryRepo()
+	ctx := context.Background()
+
+	track := entity.Track{Title: "Song", Duration: 3 * time.Minute, Genre: "Pop", Rating: 4.2}
+
+	err := repo.Create(ctx, track)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = repo.GetAllWithLimit(ctx, -1)
+	if err == nil {
+		t.Errorf("expected error, got nil")
+	}
+}
+
 func TestDelete(t *testing.T) {
 	repo := NewTrackArrRepositoryRepo()
 	ctx := context.Background()

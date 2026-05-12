@@ -2,6 +2,7 @@ package array
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math/rand/v2"
 	"playlist/internal/entity"
@@ -68,11 +69,16 @@ func (r *TrackArrRepository) GetAll(ctx context.Context) ([]entity.Track, error)
 	return result, nil
 }
 
+// функция получения ограниченого количества треков
 func (r *TrackArrRepository) GetAllWithLimit(ctx context.Context, limit int) ([]entity.Track, error) {
 	const op = "infra.array.TrackArrRepository.GetAllWithLimit"
 
 	r.mu.Lock()
 	defer r.mu.Unlock()
+
+	if limit < 0 || limit > len(r.arr) {
+		return nil, errors.New("wrong limit")
+	}
 
 	result := make([]entity.Track, limit)
 	copy(result, r.arr[:limit])
